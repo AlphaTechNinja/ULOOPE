@@ -1,3 +1,25 @@
+--[[
+This is my most complicated class system yet so I should explain it
+
+Everything is mostly method based so don't use direct access to any of
+the fields starting with "__" unless they are a metamethod you plan to add
+
+The simplest way to define a class is 
+---@class cls : Class<parent>
+local cls = classes.create(name, parent)
+
+Or if you perfer more traditionally (just needs more casting to get rid of warnings)
+---@class cls : parent
+local cls = classes.create(name, parent)
+
+This system allows the use of mixins currently they are simple and allow just
+defining new values in a class or instance. Later on they might get more advanced
+and I may add getters and setters via a new "__proxies" table
+
+I have documented every function and exactly what it does if you need further
+documentation please open a issue
+]]
+
 ---@generic T
 ---@class Class<T>
 ---@field __index self|fun(self : self, key : any) : any
