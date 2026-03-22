@@ -102,9 +102,10 @@ function classes.instance(cls, o)
 end
 
 --- Calls the constructor of a class
----@param cls Class
+---@generic T
+---@param cls Class<T>
 ---@param ... any
----@return Instance
+---@return T
 function classes.new(cls, ...)
     if cls.init then
         local o = {}
@@ -112,6 +113,21 @@ function classes.new(cls, ...)
         return o
     end
     error("No initalizer for class", 2)
+end
+
+--- Use this to compare classes or instances to classes
+---@param obj Instance|Class|nil
+---@param cls Class
+---@return boolean
+function classes.isA(obj, cls)
+    assert(type(obj) == "table","Expected a table to check class of")
+    local objcls = classes.getClass(obj)
+    if objcls == cls then
+        return true
+    elseif classes.isA(objcls,cls) then
+        return true
+    end
+    return false
 end
 
 --- Simply returns the super (aka __class)

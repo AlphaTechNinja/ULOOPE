@@ -10,3 +10,5 @@ If you are looking for documentation on the class system please look at the [cla
 ## Engine
 
 My engine is inspired by Unity and Godot with how it works where each [GameObject](./engine.lua#L4) has a table of [children](./engine.lua#L18) and it also has a table of [components](./engine.lua#L19)
+
+I added a simple messaging system recently I would check out [subscribe](./engine.lua#L145), [unsunscribe](./engine.lua#L154), and [message](./engine.lua#L166)
