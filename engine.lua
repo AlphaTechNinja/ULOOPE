@@ -164,10 +164,38 @@ end
 ---@param name string
 ---@param ... any
 function GameObject:message(name, ...)
-    local handles = self._handles[name]
+    local handles = self._handles[name] or {}
     for _, handle in pairs(handles) do
         handle(self, ...)
     end
+end
+
+
+--- Async version of events
+--- Check the `finished` key to see if it finished
+---@param name string
+---@param ... any
+---@return {_co : [function], _t : table<function, boolean>, finished : boolean}
+function GameObject:messageAsync(name, ...)
+    local handles = self._handles[name] or {}
+    if #handles > 0 then return {finished=true} end
+    local finished = {_co={},_t={},finished=false}
+    for _, handle in pairs(handles) do
+        finished._t[handle] = false
+        local co = coroutine.wrap(function (...)
+            handle(self, ...)
+            finished._t[handle] = true
+            if finished.finished then return end
+            local alldone = true
+            for co, state in pairs(finished._t) do
+                alldone = alldone and state
+            end
+            finished.finished = finished.finished or alldone
+        end)
+        finished._co[finished._co+1] = co
+        co(...)
+    end
+    return finished
 end
 
 ---@class Engine
