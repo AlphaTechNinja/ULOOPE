@@ -32,7 +32,8 @@ documentation please open a issue
 ---@generic T : Class
 ---@class Instance<T>
 
----@alias Object Class|Instance
+---@generic T : Class
+---@alias Object Class<T>|Instance<T>
 
 ---@class classes : Class
 local classes = {}
@@ -58,8 +59,9 @@ function classes.create(name, parent)
 end
 
 --- Gets the class of the provided object
----@param obj Object
----@return Class?
+---@generic T Class
+---@param obj Object<T>
+---@return T?
 function classes.getClass(obj)
     assert(type(obj) == "table","Expected a table to check class of")
     return rawget(obj,"__class")
@@ -131,8 +133,9 @@ function classes.isA(obj, cls)
 end
 
 --- Simply returns the super (aka __class)
----@param obj Object
----@return Class?
+---@generic T
+---@param obj Object<T>
+---@return T?
 function classes.super(obj)
     return classes.getClass(obj)
 end
