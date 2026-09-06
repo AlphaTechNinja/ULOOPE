@@ -84,7 +84,7 @@ function classes.resolve(obj, key)
     end
     local mixins = classes.getMixins(obj)
     for i=1, #mixins do
-        if mixins[i][key] then
+        if mixins[i][key] ~= nil then
             return mixins[i][key]
         end
     end
